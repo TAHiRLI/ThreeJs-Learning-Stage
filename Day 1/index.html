@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>My first three.js app</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from "/node_modules/three/build/three.module.js";
+      import { OrbitControls } from "https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js";
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.update();
+
+      const seth = new THREE.BoxGeometry(10, 10, 10);
+      const material = new THREE.MeshStandardMaterial({ color: 0xf62891 });
+      const fiqur = new THREE.Mesh(seth, material);
+      scene.add(fiqur);
+
+      const light = new THREE.PointLight(0xffffff);
+      light.position.set(50, 50, 50);
+      scene.add(light);
+
+      const lightambi = new THREE.AmbientLight(0xfff00f); // soft white light
+      scene.add(lightambi);
+
+      const pointLightHelper = new THREE.PointLightHelper(light);
+      scene.add(pointLightHelper);
+
+      const gridHelper = new THREE.GridHelper(200, 50);
+      scene.add(gridHelper);
+
+      const texture = new THREE.TextureLoader().load( 'https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' );
+        scene.background = texture;
+      camera.position.z = 40;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        fiqur.rotation.x += 0.01
+        fiqur.rotation.z += 0.01
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
